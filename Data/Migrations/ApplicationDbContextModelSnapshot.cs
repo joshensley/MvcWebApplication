@@ -221,14 +221,18 @@ namespace MvcWebApplication.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.BoardGame.BoardGame", b =>
+            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.BoardGameInformation.BoardGame", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BrandBoardGameID")
+                    b.Property<Guid>("BoardGameBrandID")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Controller")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -238,7 +242,10 @@ namespace MvcWebApplication.Data.Migrations
                     b.Property<string>("ImageFilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PlayerNumber")
+                    b.Property<int>("MaxPlayerNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinPlayerNumber")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -252,6 +259,10 @@ namespace MvcWebApplication.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UPC")
                         .IsRequired()
                         .HasMaxLength(12)
@@ -259,12 +270,12 @@ namespace MvcWebApplication.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("BrandBoardGameID");
+                    b.HasIndex("BoardGameBrandID");
 
-                    b.ToTable("BoardGames");
+                    b.ToTable("BoardGame");
                 });
 
-            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.BoardGame.BrandBoardGame", b =>
+            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.BoardGameInformation.BoardGameBrand", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -277,16 +288,86 @@ namespace MvcWebApplication.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("BrandBoardGames");
+                    b.ToTable("BoardGameBrand");
                 });
 
-            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.BoardGame.InventoryItemBoardGame", b =>
+            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.ComicBookInformation.ComicBook", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ComicBookBrandId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Controller")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("ImageFilePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Pages")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UPC")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ComicBookBrandId");
+
+                    b.ToTable("ComicBook");
+                });
+
+            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.ComicBookInformation.ComicBookBrand", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BrandName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ComicBookBrand");
+                });
+
+            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.InventoryItem", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BoardGameID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ComicBookID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("InStock")
@@ -314,7 +395,9 @@ namespace MvcWebApplication.Data.Migrations
 
                     b.HasIndex("BoardGameID");
 
-                    b.ToTable("InventoryItemBoardGame");
+                    b.HasIndex("ComicBookID");
+
+                    b.ToTable("InventoryItem");
                 });
 
             modelBuilder.Entity("MvcWebApplication.Models.ApplicationUser", b =>
@@ -390,36 +473,60 @@ namespace MvcWebApplication.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.BoardGame.BoardGame", b =>
+            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.BoardGameInformation.BoardGame", b =>
                 {
-                    b.HasOne("MvcWebApplication.Models.ItemInformation.BoardGame.BrandBoardGame", "BrandBoardGame")
+                    b.HasOne("MvcWebApplication.Models.ItemInformation.BoardGameInformation.BoardGameBrand", "BoardGameBrand")
                         .WithMany("BoardGames")
-                        .HasForeignKey("BrandBoardGameID")
+                        .HasForeignKey("BoardGameBrandID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("BrandBoardGame");
+                    b.Navigation("BoardGameBrand");
                 });
 
-            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.BoardGame.InventoryItemBoardGame", b =>
+            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.ComicBookInformation.ComicBook", b =>
                 {
-                    b.HasOne("MvcWebApplication.Models.ItemInformation.BoardGame.BoardGame", "BoardGame")
-                        .WithMany("InventoryItemBoardGames")
+                    b.HasOne("MvcWebApplication.Models.ItemInformation.ComicBookInformation.ComicBookBrand", "ComicBookBrand")
+                        .WithMany("ComicBooks")
+                        .HasForeignKey("ComicBookBrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ComicBookBrand");
+                });
+
+            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.InventoryItem", b =>
+                {
+                    b.HasOne("MvcWebApplication.Models.ItemInformation.BoardGameInformation.BoardGame", "BoardGame")
+                        .WithMany("InventoryItem")
                         .HasForeignKey("BoardGameID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MvcWebApplication.Models.ItemInformation.ComicBookInformation.ComicBook", "ComicBook")
+                        .WithMany()
+                        .HasForeignKey("ComicBookID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("BoardGame");
+
+                    b.Navigation("ComicBook");
                 });
 
-            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.BoardGame.BoardGame", b =>
+            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.BoardGameInformation.BoardGame", b =>
                 {
-                    b.Navigation("InventoryItemBoardGames");
+                    b.Navigation("InventoryItem");
                 });
 
-            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.BoardGame.BrandBoardGame", b =>
+            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.BoardGameInformation.BoardGameBrand", b =>
                 {
                     b.Navigation("BoardGames");
+                });
+
+            modelBuilder.Entity("MvcWebApplication.Models.ItemInformation.ComicBookInformation.ComicBookBrand", b =>
+                {
+                    b.Navigation("ComicBooks");
                 });
 #pragma warning restore 612, 618
         }

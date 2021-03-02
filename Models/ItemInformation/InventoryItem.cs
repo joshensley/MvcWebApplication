@@ -1,13 +1,15 @@
-﻿using System;
+﻿using MvcWebApplication.Models.ItemInformation.BoardGameInformation;
+using MvcWebApplication.Models.ItemInformation.ComicBookInformation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace MvcWebApplication.Models.ItemInformation.BoardGame
+namespace MvcWebApplication.Models.ItemInformation
 {
-    public class InventoryItemBoardGame
+    public class InventoryItem
     {
         public Guid ID { get; set; }
 
@@ -40,8 +42,15 @@ namespace MvcWebApplication.Models.ItemInformation.BoardGame
         [Display(Name = "Shipped Date")]
         public DateTime? ShippedDate { get; set; }
 
-        public Guid BoardGameID { get; set; }
 
+        // Board Game
+        public Guid BoardGameID { get; set; }
         public BoardGame BoardGame { get; set; }
+
+        // Comic Book
+        public Guid ComicBookID { get; set; }
+        public ComicBook ComicBook { get; set; }
+
+
     }
 }

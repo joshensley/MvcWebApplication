@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MvcWebApplication.Models.ItemInformation.BoardGame
+namespace MvcWebApplication.Models.ItemInformation.BoardGameInformation
 {
-    public class BrandBoardGame
+    public class BoardGameBrand
     {
         public Guid ID { get; set; }
 

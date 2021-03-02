@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MvcWebApplication.Models;
-using MvcWebApplication.Models.ItemInformation.BoardGame;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MvcWebApplication.Models.ItemInformation.BoardGameInformation;
+using MvcWebApplication.Models.ItemInformation.ComicBookInformation;
+using MvcWebApplication.Models.ItemInformation;
 
 namespace MvcWebApplication.Data
 {
@@ -16,8 +18,15 @@ namespace MvcWebApplication.Data
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        public DbSet<BoardGame> BoardGames { get; set; }
-        public DbSet<BrandBoardGame> BrandBoardGames { get; set; }
-        public DbSet<InventoryItemBoardGame> InventoryItemBoardGame { get; set; }
+
+        public DbSet<BoardGameBrand> BoardGameBrand { get; set; }
+
+        public DbSet<BoardGame> BoardGame { get; set; }
+
+        public DbSet<ComicBookBrand> ComicBookBrand { get; set; }
+
+        public DbSet<ComicBook> ComicBook { get; set; }
+
+        public DbSet<InventoryItem> InventoryItem { get; set; }
     }
 }

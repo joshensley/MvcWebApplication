@@ -1,8 +1,167 @@
-﻿@{
+﻿@model MvcWebApplication.ViewModels.Home.HomeViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<br />
+
+<div class="row">
+    <nav class="col-md-3 d-none d-md-block bg-light sidebar" style="border-radius:5px;">
+
+        <form asp-controller="Home" asp-action="Index" method="get">
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-2 text-muted">
+                <span>Search by Title</span>
+            </h6>
+            <input type="text" 
+                   class="form-control" 
+                   placeholder="Board Game Title" 
+                   name="searchString" 
+                   value="@(ViewData["CurrentFilter"])" />
+
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-2 text-muted">
+                <span>Sort by Title</span>
+            </h6>
+            <div class="form-check ml-3">
+                <input class="form-check-input" type="radio" name="sortOrder" id="title_ascending" value="title_ascending" checked="@(String.IsNullOrEmpty(ViewData["CurrentSort"].ToString()) || ViewData["CurrentSort"].ToString() == "title_ascending" ? true : false)">
+                <label class="form-check-label" for="exampleRadios1">
+                    Ascending
+                </label>
+            </div>
+            <div class="form-check ml-3">
+                <input class="form-check-input" type="radio" name="sortOrder" id="title_descending" value="title_descending" checked="@(ViewData["CurrentSort"].ToString() == "title_descending" ? true : false)">
+                <label class="form-check-label" for="exampleRadios2">
+                    Descending
+                </label>
+            </div>
+
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
+                <span>Item Type</span>
+            </h6>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <div class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-2 mb-1 text-dark">
+                        <label>
+                            <input type="checkbox"
+                                   name="itemTypeComicBook"
+                                   value="true"
+                                   checked="@(ViewData["ItemTypeComicBook"])"> Comic Books
+                        </label>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="sidebar-heading d-flex justify-content-between align-items-center px-3 mb-1 text-dark">
+                        <label>
+                            <input type="checkbox"
+                                   name="itemTypeBoardGame"
+                                   value="true"
+                                   checked="@(ViewData["ItemTypeBoardGame"])"> Board Games
+                        </label>
+                    </div>
+                </li>
+            </ul>
+
+            <button class="btn btn-outline-secondary form-control" type="submit" value="Search">Search</button>
+        </form>
+
+        @*<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Saved reports</span>
+            <a class="d-flex align-items-center text-muted" href="#">
+                <span data-feather="plus-circle"></span>
+            </a>
+        </h6>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span data-feather="file-text"></span>
+                    Current month
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span data-feather="file-text"></span>
+                    Last quarter
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span data-feather="file-text"></span>
+                    Social engagement
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span data-feather="file-text"></span>
+                    Year-end sale
+                </a>
+            </li>
+        </ul>*@
+    </nav>
+    <div class="col-md-9">
+        <div class="row">
+            @foreach (var item in Model.UnionItems)
+            {
+                <div class="col-6">
+                    <div class="card mb-4 shadow-sm">
+                        <img class="card-img-top" src="@item.ImageFilePath" style="width: 100%; height: 250px; object-fit: cover;" alt="Card image cap">
+                        <div class="card-body">
+                            <p class="card-text">@item.Title</p>
+                            <p class="card-text">@item.Type</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                </div>
+                                <small class="text-muted">$@item.Price</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @{
+            var prevDisabled = !Model.UnionItems.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.UnionItems.HasNextPage ? "disabled" : "";
+        }
+
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item @prevDisabled">
+                    <a asp-action="Index"
+                       asp-route-pageNumber="@(Model.UnionItems.PageIndex - 1)"
+                       asp-route-sortOrder="@(ViewData["CurrentSort"])"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       asp-route-itemTypeComicBook="@ViewData["CurrentItemTypeComicBook"]"
+                       asp-route-itemTypeBoardGame="@ViewData["CurrentItemTypeBoardGame"]"
+                       class="page-link">
+                        Previous
+                    </a>
+                </li>
+                <li class="page-item @nextDisabled">
+                    <a asp-action="Index"
+                       asp-route-pageNumber="@(Model.UnionItems.PageIndex + 1)"
+                       asp-route-sortOrder="@(ViewData["CurrentSort"])"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       asp-route-itemTypeComicBook="@ViewData["CurrentItemTypeComicBook"]"
+                       asp-route-itemTypeBoardGame="@ViewData["CurrentItemTypeBoardGame"]"
+                       class="page-link">
+                        Next
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        @(Model.UnionItems.PageIndex) of @(Model.UnionItems.TotalPages)
+    </div>
 </div>
+
+
+
+
+
+@foreach (var item in Model.UnionItems)
+{
+    <p>
+        @Html.DisplayFor(modelItem => item.Type)
+        @Html.DisplayFor(modelItem => item.Title)
+    </p>
+}

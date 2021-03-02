@@ -1,0 +1,75 @@
+﻿@model MvcWebApplication.Models.ItemInformation.InventoryItem
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>InventoryItem</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="InStock" /> @Html.DisplayNameFor(model => model.InStock)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReceivedNumber" class="control-label"></label>
+                <input asp-for="ReceivedNumber" class="form-control" />
+                <span asp-validation-for="ReceivedNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReceivedDate" class="control-label"></label>
+                <input asp-for="ReceivedDate" class="form-control" />
+                <span asp-validation-for="ReceivedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderNumber" class="control-label"></label>
+                <input asp-for="OrderNumber" class="form-control" />
+                <span asp-validation-for="OrderNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderedDate" class="control-label"></label>
+                <input asp-for="OrderedDate" class="form-control" />
+                <span asp-validation-for="OrderedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingNumber" class="control-label"></label>
+                <input asp-for="ShippingNumber" class="form-control" />
+                <span asp-validation-for="ShippingNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippedDate" class="control-label"></label>
+                <input asp-for="ShippedDate" class="form-control" />
+                <span asp-validation-for="ShippedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BoardGameID" class="control-label"></label>
+                <select asp-for="BoardGameID" class="form-control" asp-items="ViewBag.BoardGameID"></select>
+                <span asp-validation-for="BoardGameID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ComicBookID" class="control-label"></label>
+                <select asp-for="ComicBookID" class="form-control" asp-items="ViewBag.ComicBookID"></select>
+                <span asp-validation-for="ComicBookID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
